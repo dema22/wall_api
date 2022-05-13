@@ -106,6 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Override the default user model by providing a value for the AUTH_USER_MODEL
 AUTH_USER_MODEL = 'thewallapi.User'
 
 
