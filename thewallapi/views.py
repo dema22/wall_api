@@ -12,6 +12,14 @@ class PostViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateM
     serializer_class  = PostSerializer
 
 '''
+POST  /registration Creates new user in the application.
+'''
+class RegistrationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+'''
 POST   /users       Create a new user
 GET    /users       Get all users
 '''

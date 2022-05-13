@@ -6,6 +6,7 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'posts', views.PostViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'registration', views.UserViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
