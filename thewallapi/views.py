@@ -1,12 +1,19 @@
 from rest_framework import viewsets, mixins
 
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, User
+from .serializers import PostSerializer, UserSerializer
 
 '''
-GET Get all posts order by its creation time (Desc)
-POST Create a new post
+GET     /posts      Get all posts order by its creation time (Desc)
+POST    /posts/     Create a new post
 '''
 class PostViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class  = PostSerializer
+
+'''
+POST   /users       Create a new user
+'''
+class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
