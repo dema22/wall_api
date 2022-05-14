@@ -9,12 +9,11 @@ from .views import RegisterView
 router = routers.DefaultRouter()
 router.register(r'posts', views.PostViewSet)
 router.register(r'users', views.UserViewSet)
-router.register(r'registration', views.UserViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-   path('register/', RegisterView.as_view(), name='auth_register'),
+   path('registration/', RegisterView.as_view(), name='registration_view'),
    path('', include(router.urls)),
 ]
