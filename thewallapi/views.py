@@ -1,4 +1,5 @@
 from rest_framework import viewsets, mixins
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Post, User
 from .serializers import PostSerializer, UserSerializer
@@ -20,9 +21,10 @@ class RegistrationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
 
 
 '''
-POST   /users       Create a new user
 GET    /users       Get all users
 '''
-class UserViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.ListModelMixin):
+class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    # Allow access to any authenticated user,
+    permission_classes = [IsAuthenticated]
