@@ -35,6 +35,7 @@ class RegisterView(generics.CreateAPIView):
 '''
 GET    /users       Get all users
 '''
-class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
+    permission_classes = (AllowAny,)
     serializer_class = UserSerializer
