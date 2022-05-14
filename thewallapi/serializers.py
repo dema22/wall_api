@@ -15,6 +15,14 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = "__all__"
 
+class ProfilePostSerializer(serializers.ModelSerializer):
+    title =  serializers.CharField(min_length=5)
+    content = serializers.CharField(min_length=10)
+
+    class Meta:
+        model = Post
+        fields = ['created_at', 'title', 'content']
+
 class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
