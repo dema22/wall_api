@@ -8,7 +8,7 @@ from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer
 GET     /posts      Get all posts order by its creation time (Desc)    Anonymous user/ logged user     
 POST    /posts/     Create a new post                                  Logged User
 '''
-class PostViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
+class ListCreatePostView(generics.ListCreateAPIView):
     queryset = Post.objects.all().order_by('-created_at')
     # Allow read permissions to anonymous users, and only allow write permissions to authenticated users.
     permission_classes = (IsAuthenticatedOrReadOnly,)
