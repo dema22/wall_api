@@ -10,10 +10,14 @@ class PostSerializer(serializers.ModelSerializer):
     content = serializers.CharField(min_length=10)
     # Read-only fields are included in the API output, but should not be included in the input during create or update operations.
     user_name = serializers.ReadOnlyField(source='user_id.username')
+    user_id = serializers.PrimaryKeyRelatedField(
+        read_only=False,
+        queryset=User.objects.all()
+    )
 
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = ['id', 'created_at', 'title', 'content', 'user_id', 'user_name']
 
 class ProfilePostSerializer(serializers.ModelSerializer):
     title =  serializers.CharField(min_length=5)
