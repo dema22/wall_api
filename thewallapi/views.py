@@ -1,6 +1,9 @@
-from rest_framework import viewsets, mixins, generics
+from rest_framework import generics, status
+from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 
+from . import tokenutils
 from .models import Post, User
 from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer
 
@@ -14,6 +17,16 @@ class ListCreatePostView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class  = PostSerializer
 
+    def post(self, request,*args, **kwargs):
+        token_payload = tokenutils.validate_token(request)
+        user_id = request.data['user_id']
+        print(request.data)
+        try:
+            tokenutils.authenticate_user(user_id, token_payload)
+        except APIException:
+            return Response({'detail': 'You can only create a post for your user account.'}, status=status.HTTP_400_BAD_REQUEST, content_type='application/json')
+        return super().get(request, *args, **kwargs)
+
 '''
 GET   /post/profile/:userId  Get all posts only of the logged user
 '''
@@ -23,6 +36,15 @@ class ProfilePostView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return Post.objects.filter(user_id_id=user_id).order_by('-created_at')
+
+    def get(self, request,*args, **kwargs):
+        token_payload = tokenutils.validate_token(request)
+        user_id = self.kwargs['user_id']
+        try:
+            tokenutils.authenticate_user(user_id, token_payload)
+        except APIException:
+            return Response({'detail': 'You are trying to access posts from a different user'}, status=status.HTTP_401_UNAUTHORIZED, content_type='application/json')
+        return super().get(request, *args, **kwargs)
 
 '''
 POST  /registration Creates new user in the application.

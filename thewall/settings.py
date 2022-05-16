@@ -140,3 +140,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+SIMPLE_JWT = {
+    'ALGORITHM': 'HS512',
+    'SIGNING_KEY': '123',
+}
