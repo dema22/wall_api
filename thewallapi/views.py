@@ -25,7 +25,7 @@ class ListCreatePostView(generics.ListCreateAPIView):
             tokenutils.authenticate_user(user_id, token_payload)
         except APIException:
             return Response({'detail': 'You can only create a post for your user account.'}, status=status.HTTP_400_BAD_REQUEST, content_type='application/json')
-        return super().get(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
 '''
 GET   /post/profile/:userId  Get all posts only of the logged user

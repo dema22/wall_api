@@ -7,9 +7,8 @@ def validate_token(request):
     # if token is invalid, it raises an exception and returns 401
     jwt_authenticator = JWTAuthentication()
     response = jwt_authenticator.authenticate(request)
-    if response is not None:
-        user , token = response
-        return token.payload
+    user , token = response
+    return token.payload
 
 def authenticate_user(user_id, token_payload):
     if user_id != token_payload['user_id']:
