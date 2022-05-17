@@ -3,7 +3,7 @@ from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from . import tokenutils
+from . import tokenutils, mailing
 from .models import Post, User
 from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer
 
@@ -53,6 +53,12 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
+    def post(self, request, *args, **kwargs):
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            print('Send email')
+            mailing.send_emails(request)
+        return super().post(request, *args, **kwargs)
 
 '''
 GET    /users       Get all users

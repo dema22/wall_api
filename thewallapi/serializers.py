@@ -62,4 +62,5 @@ class UserSerializer(serializers.ModelSerializer):
 
         user.set_password(validated_data['password'])
         user.save()
+        print('saved user in db')
         return user
