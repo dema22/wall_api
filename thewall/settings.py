@@ -144,9 +144,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-SIMPLE_JWT = {
-    'ALGORITHM': 'HS512',
-    'SIGNING_KEY': '123',
-}
+
 
 CORS_ORIGIN_ALLOW_ALL = True
