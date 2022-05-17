@@ -2,6 +2,7 @@ from rest_framework import generics, status
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from . import tokenutils, mailing
 from .models import Post, User
@@ -59,6 +60,22 @@ class RegisterView(generics.CreateAPIView):
             print('Send email')
             mailing.send_emails(request)
         return super().post(request, *args, **kwargs)
+
+'''
+POST  /logout    Log out a user from the app, by Black-list the refresh token 
+'''
+class LogoutView(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 '''
 GET    /users       Get all users
