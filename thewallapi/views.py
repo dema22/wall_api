@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from . import tokenutils, mailing
 from .models import Post, User
-from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer
+from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer, RetrieveUserProfileSerializer
 
 '''
 GET     /posts      Get all posts order by its creation time (Desc)    Anonymous user/ logged user     
@@ -84,3 +84,11 @@ class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
+
+'''
+GET  /profile   Get profile of a authenticade user
+'''
+class RetrieveUserProfileView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RetrieveUserProfileSerializer

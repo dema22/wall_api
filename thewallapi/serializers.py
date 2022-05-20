@@ -64,3 +64,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         print('saved user in db')
         return user
+
+class RetrieveUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
