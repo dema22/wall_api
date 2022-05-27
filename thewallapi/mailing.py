@@ -1,9 +1,11 @@
+import os
+
 from sendgrid import Email, To, Content, Mail, sendgrid
 
 
 def send_emails(request):
-    sg = sendgrid.SendGridAPIClient('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')
-    from_email = Email('felipedemaria@hotmail.com')
+    sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SG_KEY'))
+    from_email = Email(os.environ.get('SG_FROM'))
     to_email = To(request.data['email'])
     subject = 'Welcome to the Wall App !'
     message = f'Hi {request.data["username"]}!\n You have joined The Wall community! Have Fun!!'
