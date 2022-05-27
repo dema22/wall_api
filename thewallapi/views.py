@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticate
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from . import tokenutils, mailing
+from . import tokenutils
 from .models import Post, User
 from .serializers import PostSerializer, UserSerializer, ProfilePostSerializer, RetrieveUserProfileSerializer
 
@@ -54,12 +54,6 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
-    def post(self, request, *args, **kwargs):
-        user_serializer = UserSerializer(data=request.data)
-        if user_serializer.is_valid():
-            print('Send email')
-            mailing.send_emails(request)
-        return super().post(request, *args, **kwargs)
 
 '''
 POST  /logout    Log out a user from the app, by Black-list the refresh token 
@@ -86,7 +80,7 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
 
 '''
-GET  /profile   Get profile of a authenticade user
+GET  /profile   Get profile of a authenticated user
 '''
 class RetrieveUserProfileView(generics.RetrieveAPIView):
     queryset = User.objects.all()

@@ -2,6 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from . import mailing
 from .models import Post, User
 
 
@@ -16,9 +17,6 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'created_at', 'title', 'content', 'user_id', 'user_name']
 
 class ProfilePostSerializer(serializers.ModelSerializer):
-    title =  serializers.CharField(min_length=5)
-    content = serializers.CharField(min_length=10)
-
     class Meta:
         model = Post
         fields = ['id', 'created_at', 'title', 'content']
@@ -55,10 +53,9 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
-
         user.set_password(validated_data['password'])
         user.save()
-        print('saved user in db')
+        mailing.send_emails(validated_data)
         return user
 
 class RetrieveUserProfileSerializer(serializers.ModelSerializer):
