@@ -91,6 +91,14 @@ class ApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         print('FINISH test_failed_login')
 
+    def test_create_post_invalid_fields_error(self):
+        print('test_create_post_invalid_fields_error')
+        client_with_auth = get_client_with_authentication()
+        response = client_with_auth.post('/posts/', {'title': 'P', 'content': 'P', 'user_id': self.user2.id})
+        print(response.json())
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        print('FINISH test_create_post_invalid_fields_error')
+
     def test_create_post_using_another_userid_error(self):
         print('test_create_post_using_another_userid_error')
         client_with_auth = get_client_with_authentication()
@@ -120,6 +128,14 @@ class ApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print('FINISH test_get_profile_information_ok')
 
+    def test_get_profile_information_error(self):
+        print('test_get_profile_information_error')
+        client_with_auth = get_client_with_authentication()
+        # Trying to access profile information of user 1 , and we are logged with user2.
+        response = client_with_auth.get('/profile/user/' + str(self.user1.id))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        print('FINISH test_get_profile_information_error')
+
     def test_get_all_post_from_logged_user(self):
         print('test_get_all_post_from_logged_user')
         client_with_auth = get_client_with_authentication()
@@ -127,7 +143,7 @@ class ApiTests(TestCase):
         response = client_with_auth.get('/post/profile/' + str(self.user2.id))
         self.assertEqual(len(response.json()), 2) # asserting that the response is 2 , because user2 has two posts.
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        print('test_get_all_post_from_logged_user')
+        print('FINISH test_get_all_post_from_logged_user')
 
     def test_get_all_post_from_logged_user_error(self):
         print('test_get_all_post_from_logged_user_error')
