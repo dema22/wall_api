@@ -79,9 +79,17 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
 
 '''
-GET  /profile   Get profile of a authenticated user
+GET  /profile/user/:pk   Get profile information of a authenticated user, where PK, is the primary key of the user model.
 '''
 class RetrieveUserProfileView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = RetrieveUserProfileSerializer
+    def get(self, request,*args, **kwargs):
+        token_payload = tokenutils.validate_token(request)
+        user_id = self.kwargs['pk']
+        try:
+            tokenutils.authenticate_user(user_id, token_payload)
+        except APIException:
+            return Response({'detail': 'You can not retrieve the profile of another user.'}, status=status.HTTP_400_BAD_REQUEST, content_type='application/json')
+        return super().get(request, *args, **kwargs)
