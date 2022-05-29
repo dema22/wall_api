@@ -11,5 +11,5 @@ def validate_token(request):
     return token.payload
 
 def authenticate_user(user_id, token_payload):
-    if user_id != token_payload['user_id']:
+    if int(user_id) != int(token_payload['user_id']):
         raise APIException('You are trying to access post from a different user!')

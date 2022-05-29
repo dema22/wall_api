@@ -21,7 +21,6 @@ class ListCreatePostView(generics.ListCreateAPIView):
     def post(self, request,*args, **kwargs):
         token_payload = tokenutils.validate_token(request)
         user_id = request.data['user_id']
-        print(request.data)
         try:
             tokenutils.authenticate_user(user_id, token_payload)
         except APIException:
@@ -44,7 +43,7 @@ class ProfilePostView(generics.ListAPIView):
         try:
             tokenutils.authenticate_user(user_id, token_payload)
         except APIException:
-            return Response({'detail': 'You are trying to access posts from a different user'}, status=status.HTTP_401_UNAUTHORIZED, content_type='application/json')
+            return Response({'detail': 'You are trying to access posts from a different user'}, status=status.HTTP_400_BAD_REQUEST, content_type='application/json')
         return super().get(request, *args, **kwargs)
 
 '''
