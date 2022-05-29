@@ -53,7 +53,6 @@ class ApiTests(TestCase):
         response = client.get('/posts/', format='json')
         json_response = response.json()
         self.assertEqual(len(json_response),3)
-        print(response.json())
         self.assertEqual(json_response[0]['content'],self.post3.content)
         self.assertEqual(response.status_code,status.HTTP_200_OK)
         print('FINISH test_get_posts_from_all_users')
@@ -95,7 +94,6 @@ class ApiTests(TestCase):
         print('test_create_post_invalid_fields_error')
         client_with_auth = get_client_with_authentication()
         response = client_with_auth.post('/posts/', {'title': 'P', 'content': 'P', 'user_id': self.user2.id})
-        print(response.json())
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         print('FINISH test_create_post_invalid_fields_error')
 
@@ -105,7 +103,6 @@ class ApiTests(TestCase):
         response = client_with_auth.post('/posts/',
                                {'title': 'Creating Post', 'content': 'Trying to post for another account',
                                 'user_id': self.user1.id}) #passing other user id account
-        print(response.json())
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         print('FINISH test_create_post_using_another_userid_error')
 
@@ -113,16 +110,12 @@ class ApiTests(TestCase):
         print('test_create_post_ok')
         client_with_auth = get_client_with_authentication()
         post_creation_response = client_with_auth.post('/posts/', {'title': 'Creating Post', 'content': 'Post Content!!!', 'user_id': self.user2.id})
-        print('En el test, luego de recibir la respuesta del endpoint/post:')
-        print(post_creation_response.json())
-        print(post_creation_response.status_code)
         self.assertEqual(post_creation_response.status_code, status.HTTP_201_CREATED)
         print('FINISH test_create_post_ok')
 
     def test_get_profile_information_ok(self):
         print('test_get_profile_information_ok')
         client_with_auth = get_client_with_authentication()
-        #
         response = client_with_auth.get('/profile/user/' + str(self.user2.id))
         self.assertEqual(response.json()['id'], self.user2.id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -139,8 +132,7 @@ class ApiTests(TestCase):
     def test_get_all_post_from_logged_user(self):
         print('test_get_all_post_from_logged_user')
         client_with_auth = get_client_with_authentication()
-        #
-        response = client_with_auth.get('/post/profile/' + str(self.user2.id))
+        response = client_with_auth.get('/posts/user/' + str(self.user2.id))
         self.assertEqual(len(response.json()), 2) # asserting that the response is 2 , because user2 has two posts.
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print('FINISH test_get_all_post_from_logged_user')
@@ -148,8 +140,7 @@ class ApiTests(TestCase):
     def test_get_all_post_from_logged_user_error(self):
         print('test_get_all_post_from_logged_user_error')
         client_with_auth = get_client_with_authentication()
-        #
         # Trying to access the post from user1, and we are logged with user2
-        response = client_with_auth.get('/post/profile/' + str(self.user1.id))
+        response = client_with_auth.get('/posts/user/' + str(self.user1.id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         print('FINISH test_get_all_post_from_logged_user_error')
