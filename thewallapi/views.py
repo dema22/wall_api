@@ -51,13 +51,7 @@ class LogoutView(generics.CreateAPIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-'''
-GET    /users       Get all users
-'''
-class UserListView(generics.ListAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
+
 
 '''
 GET  /profile/user/:pk   Get profile information of a authenticated user, where PK, is the primary key (id) of the user model.

@@ -12,4 +12,4 @@ def send_emails(data):
     content = Content("text/plain", message)
     mail = Mail(from_email, to_email, subject, content)
     # Using the sg api to send our email
-    response = sg.client.mail.send.post(request_body=mail.get())
+    sg.client.mail.send.post(request_body=mail.get())
