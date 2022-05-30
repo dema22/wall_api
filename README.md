@@ -11,10 +11,11 @@ In order to run The Wall app, you will need:
 
 # Running The Wall
 
-1. cd into the_wall_api
+1. cd into the wall_api
 2. Create a file called varsettings.env to tell Docker the environment variables we need.
-3. Create a Sendgrid account.
-4. Do docker-compose up
+3. Create a Sendgrid account. Follow # Sendgrid Account instructions.
+4. Set a variable name 'SECRET_KEY' in the varsettings.env, this should be a 50 character string literal, randomly generated.
+5. Do docker-compose up
 
 # Sendgrid Account
 1. Create a sendgrid account.
@@ -27,4 +28,5 @@ In order to run The Wall app, you will need:
 # varsettings.env format:
 	SG_KEY=<API_KEY>
 	SG_FROM=<EMAIL_SENDER>
+    SECRET_KEY=<SECRET_KEY>
 

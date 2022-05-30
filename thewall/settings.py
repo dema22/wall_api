@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*n#okb%r@5$*4$2)cf4bew5n_gj6uza29oxfbj1201bcwd^t3p'
+SECRET_KEY = os.environ.get('SECRET_KEY','insecurestring')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -146,8 +146,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=120),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
